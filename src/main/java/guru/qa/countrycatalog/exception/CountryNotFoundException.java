@@ -1,4 +1,8 @@
-package guru.qa.countrycatalog;
+package guru.qa.countrycatalog.exception;
 
-public class Exception {
+public class CountryNotFoundException extends RuntimeException {
+
+    public CountryNotFoundException(String message) {
+        super(message);
+    }
 }

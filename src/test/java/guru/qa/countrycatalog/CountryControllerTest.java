@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-public class ContryControllerTest {
+public class CountryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,7 +45,6 @@ public class ContryControllerTest {
                                 .post("/api/country/add")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(country))
-
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -60,12 +62,32 @@ public class ContryControllerTest {
                 513120
         );
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/country/edit")
+                        .put("/api/country/edit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(country))
                 )
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Thailand"))
+                .andExpect(jsonPath("$.code").value("TH"))
+                .andExpect(jsonPath("$.area").value("513120"));
+    }
+
+    @Test
+    @Sql(scripts = "/countryShouldBeUpdated.sql")
+    void countryNameShouldBeUpdated() throws Exception {
+        String code = "TH";
+        Map<String,String> map = new HashMap<>();
+        map.put("name", "Thai");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/api/country/" + code + "/edit")
+                        .content(om.writeValueAsString(map))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Thai"))
                 .andExpect(jsonPath("$.code").value("TH"))
                 .andExpect(jsonPath("$.area").value("513120"));
     }
@@ -76,6 +98,7 @@ public class ContryControllerTest {
         mockMvc.perform(get("/api/country/all")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(10)))
                 .andExpect(jsonPath("$[0].name").value("Russia"))
