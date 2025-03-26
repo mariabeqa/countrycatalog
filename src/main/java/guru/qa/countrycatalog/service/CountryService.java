@@ -1,17 +1,26 @@
 package guru.qa.countrycatalog.service;
 
-import guru.qa.countrycatalog.domain.Country;
+import guru.qa.countrycatalog.model.CountryJson;
+import guru.qa.countrycatalog.model.graphql.CountryGql;
+import guru.qa.countrycatalog.model.graphql.CountryInputGql;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
 public interface CountryService {
 
-    Country addCountry(Country country);
+    CountryJson addCountry(CountryJson country);
 
-    Country updateCountry(Country country);
+    CountryJson updateCountry(CountryJson country);
 
-    Country updateCountryName(String countryCode, String countryName);
+    CountryJson updateCountryName(String countryCode, String countryName);
 
-    List<Country> getAll();
+    List<CountryJson> getAll();
 
+    Slice<CountryGql> getAllGql(Pageable pageable);
+
+    CountryGql addGqlCountry(CountryInputGql input);
+
+    CountryGql updateCountryNameGql(String countryCode, String countryName);
 }

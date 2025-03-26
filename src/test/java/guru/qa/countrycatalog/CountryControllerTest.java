@@ -1,7 +1,7 @@
 package guru.qa.countrycatalog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.qa.countrycatalog.domain.Country;
+import guru.qa.countrycatalog.model.CountryJson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +36,7 @@ public class CountryControllerTest {
 
     @Test
     void newCountryShouldBeCreated() throws Exception {
-        Country country = new Country(
+        CountryJson country = new CountryJson(
               "Thailand",
                 "TH",
                513120
@@ -56,7 +56,7 @@ public class CountryControllerTest {
     @Test
     @Sql(scripts = "/countryShouldBeUpdated.sql")
     void countryShouldBeUpdated() throws Exception {
-        Country country = new Country(
+        CountryJson country = new CountryJson(
                 "Thailand",
                 "TH",
                 513120

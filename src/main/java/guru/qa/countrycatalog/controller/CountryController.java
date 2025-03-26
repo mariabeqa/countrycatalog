@@ -1,6 +1,6 @@
 package guru.qa.countrycatalog.controller;
 
-import guru.qa.countrycatalog.domain.Country;
+import guru.qa.countrycatalog.model.CountryJson;
 import guru.qa.countrycatalog.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,23 +21,23 @@ public class CountryController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Country addCountry(@RequestBody Country country) {
+    public CountryJson addCountry(@RequestBody CountryJson country) {
         return countryService.addCountry(country);
     }
 
     @PutMapping("/edit")
-    public Country editCountry(@RequestBody Country country) {
+    public CountryJson editCountry(@RequestBody CountryJson country) {
         return countryService.updateCountry(country);
     }
 
     @PatchMapping(value = "/{countryCode}/edit")
-    public Country editCountry(@PathVariable(value = "countryCode") String countryCode,
+    public CountryJson editCountry(@PathVariable(value = "countryCode") String countryCode,
                                @RequestBody String countryName) {
         return countryService.updateCountryName(countryCode, countryName);
     }
 
     @GetMapping("/all")
-    public List<Country> getAll() {
+    public List<CountryJson> getAll() {
         return countryService.getAll();
     }
 }
